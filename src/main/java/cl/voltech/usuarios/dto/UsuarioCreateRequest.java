@@ -5,7 +5,7 @@ public record UsuarioCreateRequest(
     String nombre,
     String apellidos,
     String email,
-    String contrasena,
+    String contraseña,
     String calle,
     String depto) {
 }

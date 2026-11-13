@@ -6,7 +6,6 @@ public record UsuarioResponse(
     String nombre,
     String apellidos,
     String email,
-    String contraseña,
     String calle,
     String depto) {
 
