@@ -1,24 +1,21 @@
 package cl.voltech.usuarios.mapper;
 
-import org.springframework.stereotype.Component;
 
+import cl.voltech.usuarios.dto.UsuarioCreateRequest;
 import cl.voltech.usuarios.dto.UsuarioResponse;
 import cl.voltech.usuarios.model.Usuario;
 
-@Component
-public class UsuarioMapper {
+public interface UsuarioMapper {
 
-    public UsuarioResponse toResponse(Usuario usuario) {
-        return new UsuarioResponse(
-                usuario.getId(),
-                usuario.getRun(),
-                usuario.getNombre(),
-                usuario.getApellidos(),
-                usuario.getEmail(),
-                usuario.getContraseña(),
-                usuario.getCalle(),
-                usuario.getDepto(),
-                usuario.getRol(),
-                usuario.getFechaCreacion());
+    public static Usuario toModel(UsuarioCreateRequest request) {
+        return new Usuario(
+            request.run(),
+            request.nombre(),
+            request.apellidos(),
+            request.email(),
+            request.contraseña(),
+            request.calle(),
+            request.depto()
+        );
     }
 }

@@ -5,14 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,8 +19,6 @@ import lombok.Setter;
 @Setter
 
 @NoArgsConstructor
-@AllArgsConstructor
-
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
@@ -32,16 +28,16 @@ public class Usuario {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "run", nullable = false, unique = true, length = 100)
+    @Column(name = "run", nullable = false, unique = true, length = 12)
     private String run;
 
-    @Column(name = "nombre", nullable = false, length = 100)
+    @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
 
-    @Column(name = "apellidos", nullable = false, length = 100)
+    @Column(name = "apellidos", nullable = false, length = 50)
     private String apellidos;
 
-    @Column(name = "email", nullable = false, unique = true, length = 100)
+    @Column(name = "email", nullable = false, unique = true, length = 150)
     private String email;
 
     @Column(name = "contrasena", nullable = false, length = 255)
@@ -50,14 +46,13 @@ public class Usuario {
     @Column(name = "calle", nullable = false, length = 100)
     private String calle;
 
-    @Column(name = "depto", nullable = false, length = 100)
+    @Column(name = "dpto", length = 20)
     private String depto;
 
-    @Column(name = "rol", nullable = true, length = 20)
-    @ColumnDefault("'cliente'")
+    @Column(name = "rol", length = 20)
     private String rol = "cliente";
 
     @CreationTimestamp
-    @Column(name = "fecha_creacion", nullable = true, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
-    private OffsetDateTime fechaCreacion;
+    @Column(name = "fecha_creacion", updatable = false)
+    private LocalDateTime fechaCreacion;
 }
