@@ -10,15 +10,14 @@ public class UsuarioMapper {
 
     public UsuarioResponse toResponse(Usuario usuario) {
         return new UsuarioResponse(
-                usuario.getId(),
-                usuario.getRun(),
-                usuario.getNombre(),
-                usuario.getApellidos(),
-                usuario.getEmail(),
-                usuario.getContraseña(),
-                usuario.getCalle(),
-                usuario.getDepto(),
-                usuario.getRol(),
-                usuario.getFechaCreacion());
+            usuario.getId(),
+            usuario.getRun(),
+            usuario.getNombre(),
+            usuario.getApellidos(),
+            usuario.getEmail(),
+            usuario.getContraseña(),
+            usuario.getCalle(),
+            usuario.getDepto() 
+        );
     }
 }
