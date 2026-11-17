@@ -1,12 +1,12 @@
 package cl.voltech.usuarios.service;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 import cl.voltech.usuarios.dto.UsuarioCreateRequest;
+import cl.voltech.usuarios.dto.UsuarioResponse;
+import cl.voltech.usuarios.exception.UsuarioNoEncontradoException;
 import cl.voltech.usuarios.mapper.UsuarioMapper;
 import cl.voltech.usuarios.model.Usuario;
 import cl.voltech.usuarios.repository.UsuarioRepository;
@@ -22,20 +22,21 @@ public class UsuarioService {
         this.usuarioMapper = usuarioMapper;
     }
 
-    public Usuario crearUsuario(UsuarioCreateRequest request) {
+    public UsuarioResponse crearUsuario(UsuarioCreateRequest request) {
         Usuario nuevoUsuario = usuarioMapper.toModel(request);
 
-        return usuarioRepo.save(nuevoUsuario);
+        return usuarioMapper.toResponse(usuarioRepo.save(nuevoUsuario));
     }
 
-    public List<Usuario> listarTodosUsuarios() {
-        return usuarioRepo.findAll();
+    public List<UsuarioResponse> listarTodosUsuarios() {
+        return usuarioRepo.findAll().stream()
+            .map(usuarioMapper::toResponse)
+            .toList();
     }
 
     public Usuario buscarUsuarioId(Integer id) {
         return usuarioRepo.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+            .orElseThrow(() -> new UsuarioNoEncontradoException(id));
     }
 
     public Usuario actualizarUsuario(Integer id, Usuario datosUsuario) {

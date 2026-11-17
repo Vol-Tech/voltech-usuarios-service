@@ -7,6 +7,7 @@ public record UsuarioResponse(
     String apellidos,
     String email,
     String calle,
-    String depto) {
-
+    String depto
+) {
+    
 }
