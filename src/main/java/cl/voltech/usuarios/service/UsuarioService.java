@@ -39,10 +39,16 @@ public class UsuarioService {
             .orElseThrow(() -> new UsuarioNoEncontradoException(id));
     }
 
-    public Usuario actualizarUsuario(Integer id, Usuario datosUsuario) {
-        buscarUsuarioId(id);
-        datosUsuario.setId(id);
-        return usuarioRepo.save(datosUsuario);
+    public UsuarioResponse actualizarUsuario(Integer id, UsuarioCreateRequest request) {
+        Usuario usuario = buscarUsuarioId(id);
+
+        usuario.setNombre(request.nombre());
+        usuario.setApellidos(request.apellidos());
+        usuario.setEmail(request.email());
+        usuario.setCalle(request.calle());
+        usuario.setDepto(request.depto());
+
+        return usuarioMapper.toResponse(usuarioRepo.save(usuario));
     }
 
     public void eliminarUsuario(Integer id) {
