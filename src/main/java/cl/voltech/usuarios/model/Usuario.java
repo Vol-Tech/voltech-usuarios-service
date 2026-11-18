@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,6 +50,10 @@ public class Usuario {
 
     @Column(name = "dpto", length = 20)
     private String depto;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "comuna_id", nullable = false)
+    private Comuna comuna;
 
     @Column(name = "rol", length = 20)
     private String rol = "cliente";

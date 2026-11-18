@@ -1,6 +1,7 @@
 package cl.voltech.usuarios.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record UsuarioCreateRequest(
     @NotBlank(message = "El RUN no puede estar vacío")
@@ -19,7 +20,10 @@ public record UsuarioCreateRequest(
     String contraseña,
 
     String calle,
-    String depto
+    String depto,
+
+    @NotNull(message = "La comuna es obligatoria")
+    Integer comunaId
 ) {
 
 }
