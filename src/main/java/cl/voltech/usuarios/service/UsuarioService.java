@@ -21,14 +21,18 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepo;
     private final ComunaRepository comunaRepo;
     private final UsuarioMapper usuarioMapper;
+    private final CorreoPermitidoService correoPermitidoService;
 
-    public UsuarioService(UsuarioRepository usuarioRepo, ComunaRepository comunaRepo, UsuarioMapper usuarioMapper) {
+    public UsuarioService(UsuarioRepository usuarioRepo, ComunaRepository comunaRepo, UsuarioMapper usuarioMapper,
+            CorreoPermitidoService correoPermitidoService) {
         this.usuarioRepo = usuarioRepo;
         this.comunaRepo = comunaRepo;
         this.usuarioMapper = usuarioMapper;
+        this.correoPermitidoService = correoPermitidoService;
     }
 
     public UsuarioResponse crearUsuario(UsuarioCreateRequest request) {
+        correoPermitidoService.exigirPermitido(request.email());
         Usuario nuevoUsuario = usuarioMapper.toModel(request);
         nuevoUsuario.setComuna(buscarComuna(request.comunaId()));
 
@@ -47,6 +51,7 @@ public class UsuarioService {
     }
 
     public UsuarioResponse actualizarUsuario(Integer id, UsuarioCreateRequest request) {
+        correoPermitidoService.exigirPermitido(request.email());
         Usuario usuario = buscarUsuarioId(id);
 
         usuario.setNombre(request.nombre());
