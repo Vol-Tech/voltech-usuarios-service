@@ -2,6 +2,7 @@ package cl.voltech.usuarios.service;
 
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -19,10 +20,13 @@ public class GoogleAuthService {
 
     private final JwtDecoder jwtDecoder;
     private final UsuarioRepository usuarioRepository;
+    private final JwtService jwtService;
 
-    public GoogleAuthService(JwtDecoder jwtDecoder, UsuarioRepository usuarioRepository) {
+    public GoogleAuthService(@Qualifier("googleJwtDecoder") JwtDecoder jwtDecoder,
+            UsuarioRepository usuarioRepository, JwtService jwtService) {
         this.jwtDecoder = jwtDecoder;
         this.usuarioRepository = usuarioRepository;
+        this.jwtService = jwtService;
     }
 
     public GoogleAuthResponse autenticar(String credential) {
@@ -31,10 +35,11 @@ public class GoogleAuthService {
             String email = jwt.getClaimAsString("email");
             String nombre = jwt.getClaimAsString("name");
             return usuarioRepository.findByEmailIgnoreCase(email)
-                    .map(usuario -> new GoogleAuthResponse(credential,
+                    .map(usuario -> new GoogleAuthResponse(
+                            jwtService.crearToken(usuario.getEmail(), normalizarRol(usuario)),
                             new UsuarioAutenticado(usuario.getId(), usuario.getNombre(), usuario.getEmail(),
                                     normalizarRol(usuario))))
-                    .orElseGet(() -> new GoogleAuthResponse(credential,
+                    .orElseGet(() -> new GoogleAuthResponse(jwtService.crearToken(email, "CLIENTE"),
                             new UsuarioAutenticado(null, nombre == null ? "Usuario" : nombre, email, "CLIENTE")));
         } catch (JwtException exception) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credencial de Google inválida", exception);

@@ -1,7 +1,9 @@
 package cl.voltech.usuarios.config;
 
 import java.util.List;
+import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,17 +15,19 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-import cl.voltech.usuarios.service.GoogleAuthService;
-
 @Configuration
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtDecoder decoder,
-            GoogleAuthService googleAuthService) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+            @Qualifier("appJwtDecoder") JwtDecoder decoder) throws Exception {
         JwtAuthenticationConverter roles = new JwtAuthenticationConverter();
-        roles.setJwtGrantedAuthoritiesConverter(jwt -> List.of(
-                new SimpleGrantedAuthority("ROLE_" + googleAuthService.obtenerRol(jwt.getClaimAsString("email")))));
+        roles.setJwtGrantedAuthoritiesConverter(jwt -> {
+            String rol = jwt.getClaimAsString("rol");
+            return rol == null || rol.isBlank()
+                    ? List.of()
+                    : List.of(new SimpleGrantedAuthority("ROLE_" + rol.toUpperCase(Locale.ROOT)));
+        });
 
         http.csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
@@ -31,7 +35,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/v1/auth/verificar-correo").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/comunas").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/google", "/api/v1/usuarios").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/google", "/api/v1/auth/login",
+                                "/api/v1/usuarios").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/usuarios").hasRole("ADMINISTRADOR")
                         .requestMatchers("/api/v1/usuarios/**").hasRole("ADMINISTRADOR")
                         .anyRequest().authenticated())

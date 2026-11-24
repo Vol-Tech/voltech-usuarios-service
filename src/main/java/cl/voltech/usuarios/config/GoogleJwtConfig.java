@@ -12,7 +12,7 @@ import cl.voltech.usuarios.service.GoogleTokenValidator;
 @Configuration
 public class GoogleJwtConfig {
 
-    @Bean
+    @Bean("googleJwtDecoder")
     public JwtDecoder jwtDecoder(GoogleTokenValidator googleTokenValidator) {
         NimbusJwtDecoder decoder = NimbusJwtDecoder
                 .withJwkSetUri("https://www.googleapis.com/oauth2/v3/certs").build();

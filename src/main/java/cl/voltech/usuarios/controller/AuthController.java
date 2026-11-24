@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cl.voltech.usuarios.dto.GoogleAuthResponse;
 import cl.voltech.usuarios.dto.GoogleCredentialRequest;
+import cl.voltech.usuarios.dto.LoginRequest;
+import cl.voltech.usuarios.dto.LoginResponse;
 import cl.voltech.usuarios.service.CorreoPermitidoService;
 import cl.voltech.usuarios.service.GoogleAuthService;
+import cl.voltech.usuarios.service.PasswordLoginService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -22,10 +25,12 @@ public class AuthController {
 
     private final CorreoPermitidoService correoPermitidoService;
     private final GoogleAuthService googleAuthService;
+    private final PasswordLoginService passLogService;
 
-    public AuthController(CorreoPermitidoService correoPermitidoService, GoogleAuthService googleAuthService) {
+    public AuthController(CorreoPermitidoService correoPermitidoService, GoogleAuthService googleAuthService, PasswordLoginService passLogService) {
         this.correoPermitidoService = correoPermitidoService;
         this.googleAuthService = googleAuthService;
+        this.passLogService = passLogService;
     }
 
     @GetMapping("/verificar-correo")
@@ -36,5 +41,10 @@ public class AuthController {
     @PostMapping("/google")
     public ResponseEntity<GoogleAuthResponse> autenticarGoogle(@Valid @RequestBody GoogleCredentialRequest request) {
         return ResponseEntity.ok(googleAuthService.autenticar(request.credential()));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> iniciarSesion(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(passLogService.iniciarSesion(request));
     }
 }
