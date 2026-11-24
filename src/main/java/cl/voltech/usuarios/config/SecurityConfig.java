@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/v1/auth/verificar-correo").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/comunas").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/google", "/api/v1/usuarios").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/usuarios").hasRole("ADMINISTRADOR")
                         .requestMatchers("/api/v1/usuarios/**").hasRole("ADMINISTRADOR")
