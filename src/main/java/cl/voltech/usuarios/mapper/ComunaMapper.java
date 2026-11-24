@@ -7,6 +7,11 @@ import cl.voltech.usuarios.model.Comuna;
 @Component
 public class ComunaMapper {
     public ComunaResponse toResponse(Comuna comuna) {
-        return new ComunaResponse(comuna.getId(), comuna.getNombre());
+        return new ComunaResponse(
+            comuna.getId(),
+            comuna.getNombre(),
+            comuna.getRegion().getId(),
+            comuna.getRegion().getNombre()
+        );
     }
 }

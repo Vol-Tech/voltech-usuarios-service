@@ -20,6 +20,9 @@ public class ComunaService {
     }
 
     public List<ComunaResponse> listarTodas() {
-        return comunaRepo.findAll().stream().map(comunaMap::toResponse).toList();
+        return comunaRepo.findAllByOrderByNombreAsc()
+                .stream()
+                .map(comunaMap::toResponse)
+                .toList();
     }
 }
