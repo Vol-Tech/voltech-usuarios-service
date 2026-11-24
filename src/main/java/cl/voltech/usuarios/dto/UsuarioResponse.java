@@ -6,6 +6,7 @@ public record UsuarioResponse(
     String nombre,
     String apellidos,
     String email,
+    String rol,
     String calle,
     String depto,
     Integer comunaId,

@@ -34,6 +34,7 @@ public class UsuarioMapper {
             usuario.getNombre(),
             usuario.getApellidos(),
             usuario.getEmail(),
+            usuario.getRol() == null ? "CLIENTE" : usuario.getRol().toUpperCase(java.util.Locale.ROOT),
             usuario.getCalle(),
             usuario.getDepto(),
             usuario.getComuna().getId(),
