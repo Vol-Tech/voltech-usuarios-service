@@ -1,5 +1,7 @@
 package cl.voltech.usuarios.dto;
 
+import java.time.LocalDateTime;
+
 public record UsuarioResponse(
     Integer id,
     String run,
@@ -10,7 +12,8 @@ public record UsuarioResponse(
     String calle,
     String depto,
     Integer comunaId,
-    String comunaNombre
+    String comunaNombre,
+    LocalDateTime fechaCreacion
 ) {
     
 }

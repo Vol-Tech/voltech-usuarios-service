@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/google", "/api/v1/auth/login",
                                 "/api/v1/usuarios").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/usuarios").hasRole("ADMINISTRADOR")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/usuarios/*/direccion").authenticated()
                         .requestMatchers("/api/v1/usuarios/**").hasRole("ADMINISTRADOR")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(decoder)
