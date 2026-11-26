@@ -38,7 +38,8 @@ public class UsuarioMapper {
             usuario.getCalle(),
             usuario.getDepto(),
             usuario.getComuna().getId(),
-            usuario.getComuna().getNombre()
+            usuario.getComuna().getNombre(),
+            usuario.getFechaCreacion()
         );
     }
 }
